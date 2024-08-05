@@ -77,6 +77,11 @@ app.post('/collect-data', validateData, async (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     ipinfo(ip, IPINFO_API_KEY, async (err, cLoc) => {
+        if (err) {
+            console.error('Erro ao obter localização IP:', err);
+            return res.status(500).json({ error: 'Erro ao obter localização IP' });
+        }
+
         const sessionData = [
             data.sessionId || '',
             data.userAgent || '',
@@ -141,7 +146,7 @@ app.post('/capture-click', validateData, async (req, res) => {
 });
 
 // Rota para visitas a páginas
-app.post('/page-visit', async (req, res) => {
+app.post('/page-visit', validateData, async (req, res) => {
     const { sessionId, url, timestamp } = req.body;
     if (sessions[sessionId]) {
         sessions[sessionId].pagesVisited.push(url);
