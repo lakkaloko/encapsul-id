@@ -4,7 +4,10 @@ const { google } = require('googleapis');
 const ipinfo = require('ipinfo');
 const app = express();
 
-// Configuração da porta para usar a variável de ambiente PORT ou 3000 como fallback
+// Iniciar o servidor na porta configurada
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+});
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
