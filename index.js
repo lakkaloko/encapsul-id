@@ -5,9 +5,6 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const { google } = require('googleapis');
 const useragent = require('useragent');
 
-// Configuração da porta para usar a variável de ambiente PORT ou 3000 como fallback
-const PORT = process.env.PORT || 3000;
-
 const app = express();
 
 app.use(cors({ origin: '*' }));
@@ -25,8 +22,7 @@ async function getGeolocation(ip) {
         const response = await fetch(`https://ipinfo.io/${ip}/json?token=${IPINFO_API_KEY}`);
         const data = await response.json();
         console.log('Geolocation data:', data);
-        const [city, region, country] = (data.loc || 'N/A,N/A,N/A').split(',');
-        return { city: city || 'N/A', region: region || 'N/A', country: data.country || 'N/A' };
+        return { city: data.city || 'N/A', region: data.region || 'N/A', country: data.country || 'N/A' };
     } catch (error) {
         console.error('Erro ao obter geolocalização:', error);
         return { city: 'N/A', region: 'N/A', country: 'N/A' };
@@ -84,7 +80,7 @@ app.post('/create-session', async (req, res) => {
     console.log('Dados recebidos no servidor:', data);
 
     sessions[data.sessionId] = data;
-    console.log('Sessão criada e armazenada:', sessions);
+    console.log('Sessão criada e armazenada:', sessions[data.sessionId]);
 
     res.status(200).json({ message: 'Sessão criada.', sessionId: data.sessionId });
 });
