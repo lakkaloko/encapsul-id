@@ -6,7 +6,7 @@ const app = express();
 
 // Iniciar o servidor na porta configurada
 const PORT = process.env.PORT || 10000;
-    console.log(`Servidor rodando na porta ${PORT}`);
+console.log(`Servidor rodando na porta ${PORT}`);
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
@@ -49,7 +49,7 @@ const validateData = (req, res, next) => {
 async function appendData(auth, data) {
     const client = await auth.getClient();
     const request = {
-        spreadsheetId: process.env.SPREADSHEET_ID,
+        spreadsheetId: SPREADSHEET_ID,
         range: 'Sheet1!A1:Z1', // Altere conforme necessário
         valueInputOption: 'USER_ENTERED',
         insertDataOption: 'INSERT_ROWS',
@@ -106,11 +106,12 @@ app.post('/collect-data', validateData, async (req, res) => {
 
         try {
             await appendData(auth, sessionData);
+            console.log('Dados realmente enviados para a planilha:', sessionData);
             res.status(200).json({ message: 'Dados recebidos e processados' });
         } catch (error) {
-        console.error('Erro ao enviar dados para a planilha:', error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'Erro ao processar dados', details: error.message });
-    }
+            console.error('Erro ao processar dados:', error);
+            res.status(500).json({ error: 'Erro ao processar dados', details: error.message });
+        }
     });
 });
 
