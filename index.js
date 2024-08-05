@@ -97,6 +97,7 @@ app.post('/collect-data', validateData, async (req, res) => {
         }
 
         const sessionData = [
+            ip || '',
             data.sessionId || '',
             data.userAgent || '',
             data.browser || '',
@@ -156,7 +157,8 @@ app.post('/page-visit', validateData, async (req, res) => {
     if (sessions[sessionId]) {
         sessions[sessionId].pagesVisited = (sessions[sessionId].pagesVisited || []).concat(url);
         const formattedData = [
-            sessionId, '', '', '', '', url, timestamp, '', '', '', '', '', '', '', '', '', ''
+            '',
+            sessionId, '', '', '', url, timestamp, '', '', '', '', '', '', '', '', '', ''
         ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
         
         console.log('Dados formatados para enviar para a planilha:', formattedData);

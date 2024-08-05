@@ -21,7 +21,7 @@
 
             console.log('Dados a serem enviados:', data);
 
-            fetch('https://encapsul-id.onrender.com/collect-data', { // Corrigi o endpoint aqui
+            fetch('https://encapsul-id.onrender.com/collect-data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
