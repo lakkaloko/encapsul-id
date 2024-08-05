@@ -5,6 +5,9 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const { google } = require('googleapis');
 const useragent = require('useragent');
 
+// Configuração da porta para usar a variável de ambiente PORT ou 3000 como fallback
+const PORT = process.env.PORT || 3000;
+
 const app = express();
 
 app.use(cors({ origin: '*' }));
