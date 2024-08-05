@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Configuração de autenticação do Google Sheets
 const auth = new google.auth.GoogleAuth({
-    credentials: GOOGLE_CREDS,
+    credentials: GOOGLE_APPLICATION_CREDENTIALS,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
 });
 const sheets = google.sheets({ version: 'v4', auth });
