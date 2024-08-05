@@ -2,13 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const ipinfo = require('ipinfo');
-const cors = require('cors');  // Importa o módulo cors
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use(cors());  // Usa o middleware cors
+app.use(cors());
 
 const creds = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const ipinfoApiKey = process.env.IPINFO_API_KEY;
@@ -24,7 +24,7 @@ async function accessSpreadsheet() {
 accessSpreadsheet().catch(console.error);
 
 app.post('/create-session', async (req, res) => {
-  const { userAgent, referrer, url } = req.body;
+  const { userAgent, referrer, url, timestamp, screenResolution, deviceType, loadTime } = req.body;
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
   ipinfo(ip, ipinfoApiKey, async (err, cLoc) => {
@@ -36,13 +36,17 @@ app.post('/create-session', async (req, res) => {
         userAgent,
         referrer,
         url,
-        ip,
+        ip: cLoc.ip,
         city: cLoc.city || 'N/A',
         region: cLoc.region || 'N/A',
         country: cLoc.country || 'N/A',
         browser: userAgent.split(' ')[userAgent.split(' ').length - 1],
         os: userAgent.split(' ')[0],
         sessionId: Math.random().toString(36).substr(2, 9),
+        timestamp,
+        screenResolution,
+        deviceType,
+        loadTime,
         sessionDuration: 'N/A',
         clickCount: 0,
         pagesVisited: [url]
