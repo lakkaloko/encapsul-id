@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const { google } = require('googleapis');
-const keys = require('./monitoramento-de-cliques-be2c74e295f7.json');
 const useragent = require('useragent');
 
 const app = express();
@@ -11,17 +10,20 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
-const SHEET_ID = '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74';
-const GEOLOCATION_API_KEY = '18b71e5453304413b40c633aeb064704';
+const SHEET_ID = process.env.SPREADSHEET_ID;
+const IPINFO_API_KEY = process.env.IPINFO_API_KEY;
+
+const keys = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 const sessions = {}; // Armazena sessões por sessionId
 
 async function getGeolocation(ip) {
     try {
-        const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${GEOLOCATION_API_KEY}&ip=${ip}`);
+        const response = await fetch(`https://ipinfo.io/${ip}/json?token=${IPINFO_API_KEY}`);
         const data = await response.json();
         console.log('Geolocation data:', data);
-        return { city: data.city || 'N/A', region: data.state_prov || 'N/A', country: data.country_name || 'N/A' };
+        const [city, region, country] = (data.loc || 'N/A,N/A,N/A').split(',');
+        return { city: city || 'N/A', region: region || 'N/A', country: data.country || 'N/A' };
     } catch (error) {
         console.error('Erro ao obter geolocalização:', error);
         return { city: 'N/A', region: 'N/A', country: 'N/A' };
@@ -33,7 +35,7 @@ async function appendToSheet(data) {
         const client = new google.auth.JWT(
             keys.client_email,
             null,
-            keys.private_key,
+            keys.private_key.replace(/\\n/g, '\n'),
             ['https://www.googleapis.com/auth/spreadsheets']
         );
 
