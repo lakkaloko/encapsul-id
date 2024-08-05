@@ -84,6 +84,18 @@ app.post('/collect-data', validateData, async (req, res) => {
             return res.status(500).json({ error: 'Erro ao obter localização IP' });
         }
 
+        if (!sessions[data.sessionId]) {
+            sessions[data.sessionId] = {
+                ...data,
+                clickCount: 0
+            };
+        } else {
+            sessions[data.sessionId] = {
+                ...sessions[data.sessionId],
+                ...data
+            };
+        }
+
         const sessionData = [
             data.sessionId || '',
             data.userAgent || '',
@@ -99,7 +111,7 @@ app.post('/collect-data', validateData, async (req, res) => {
             cLoc ? cLoc.country : 'N/A',
             data.loadTime || '',
             data.sessionDuration || '',
-            data.clickCount || 0
+            sessions[data.sessionId].clickCount || 0
         ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
 
         console.log('Dados formatados para enviar para a planilha:', sessionData);
@@ -127,25 +139,14 @@ app.post('/session-duration', (req, res) => {
 });
 
 // Rota para capturar cliques
-app.post('/capture-click', validateData, async (req, res) => {
-    const data = req.body;
-    console.log('Clique capturado:', data);
-
-    const formattedData = [
-        data.sessionId || '',
-        '', '', '', '', '', '',
-        data.timestamp || '',
-        '', '', '', '', '', '',
-        '', 1, ''
-    ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
-
-    console.log('Dados formatados para enviar para a planilha:', formattedData);
-
-    try {
-        await appendData(auth, formattedData);
-        res.status(200).json({ message: 'Clique recebido e processado' });
-    } catch (error) {
-        res.status(500).json({ error: 'Erro ao processar dados' });
+app.post('/capture-click', (req, res) => {
+    const { sessionId, timestamp } = req.body;
+    if (sessions[sessionId]) {
+        sessions[sessionId].clickCount = (sessions[sessionId].clickCount || 0) + 1;
+        console.log(`Clique capturado para sessão ${sessionId}:`, sessions[sessionId].clickCount);
+        res.status(200).json({ message: 'Clique capturado' });
+    } else {
+        res.status(400).json({ error: 'Sessão não encontrada' });
     }
 });
 
@@ -153,7 +154,7 @@ app.post('/capture-click', validateData, async (req, res) => {
 app.post('/page-visit', validateData, async (req, res) => {
     const { sessionId, url, timestamp } = req.body;
     if (sessions[sessionId]) {
-        sessions[sessionId].pagesVisited.push(url);
+        sessions[sessionId].pagesVisited = (sessions[sessionId].pagesVisited || []).concat(url);
         const formattedData = [
             sessionId, '', '', '', '', url, timestamp, '', '', '', '', '', '', '', '', '', ''
         ].map(item => item === undefined ? '' : item); // Substituir undefined por ''

@@ -21,7 +21,7 @@
 
             console.log('Dados a serem enviados:', data);
 
-            fetch('https://encapsul-id.onrender.com/create-session', {
+            fetch('https://encapsul-id.onrender.com/collect-data', { // Corrigi o endpoint aqui
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -82,7 +82,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ sessionId, url: window.location.href })
+                body: JSON.stringify({ sessionId, url: window.location.href, timestamp: new Date().toISOString() })
             })
             .catch(error => console.error('Erro ao enviar página visitada:', error));
         });
