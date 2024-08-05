@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const ipinfo = require('ipinfo');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+app.use(cors());  // Adiciona o middleware de CORS
 
 const creds = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const ipinfoApiKey = process.env.IPINFO_API_KEY;
