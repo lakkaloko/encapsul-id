@@ -61,7 +61,7 @@ async function appendData(auth, data) {
         const response = (await sheets.spreadsheets.values.append(request)).data;
         console.log('Dados enviados para a planilha:', response);
     } catch (error) {
-        console.error('Erro ao enviar dados para a planilha:', error);
+        console.error('Erro ao enviar dados para a planilha:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
