@@ -2,23 +2,24 @@ const express = require('express');
 const cors = require('cors');
 const { google } = require('googleapis');
 const ipinfo = require('ipinfo');
+const { GoogleAuth } = require('google-auth-library');
 const app = express();
 
 // Configuração da porta para usar a variável de ambiente PORT ou 3000 como fallback
 const PORT = process.env.PORT || 3000;
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
-const GOOGLE_CREDS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const IPINFO_API_KEY = process.env.IPINFO_API_KEY;
+
+// Configuração da autenticação do Google
+const auth = new GoogleAuth({
+    credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS),
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+});
+
+const sheets = google.sheets({ version: 'v4', auth });
 
 app.use(cors());
 app.use(express.json());
-
-const auth = new google.auth.GoogleAuth({
-    credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS),
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"]
-});
-
-const sheets = google.sheets({version: 'v4', auth});
 
 // Função para validar os dados recebidos
 const validateData = (req, res, next) => {
