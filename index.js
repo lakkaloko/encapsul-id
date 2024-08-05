@@ -1,111 +1,101 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const ipinfo = require('ipinfo');
-const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.use(bodyParser.json());
 app.use(cors());
 
-const creds = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-const ipinfoApiKey = process.env.IPINFO_API_KEY;
-const spreadsheetId = process.env.SPREADSHEET_ID;
+const PORT = process.env.PORT || 3000;
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
+const GOOGLE_CREDS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+const IPINFO_API_KEY = process.env.IPINFO_API_KEY;
 
-const doc = new GoogleSpreadsheet(spreadsheetId);
+const sessions = {};
 
 async function accessSpreadsheet() {
-  await doc.useServiceAccountAuth(creds);
-  await doc.loadInfo();
+    const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+    await doc.useServiceAccountAuth(GOOGLE_CREDS);
+    await doc.loadInfo();
+    return doc;
 }
 
-accessSpreadsheet().catch(console.error);
-
 app.post('/create-session', async (req, res) => {
-  const { userAgent, referrer, url, timestamp, screenResolution, deviceType, loadTime } = req.body;
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const { userAgent, referrer, url, timestamp, screenResolution, deviceType, loadTime } = req.body;
+    const sessionId = generateSessionId();
 
-  ipinfo(ip, ipinfoApiKey, async (err, cLoc) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send({ message: 'Erro ao obter geolocalização' });
-    } else {
-      const sessionData = {
+    const sessionData = {
+        sessionId,
         userAgent,
         referrer,
         url,
-        ip: cLoc.ip,
-        city: cLoc.city || 'N/A',
-        region: cLoc.region || 'N/A',
-        country: cLoc.country || 'N/A',
-        browser: userAgent.split(' ')[userAgent.split(' ').length - 1],
-        os: userAgent.split(' ')[0],
-        sessionId: Math.random().toString(36).substr(2, 9),
         timestamp,
         screenResolution,
         deviceType,
         loadTime,
-        sessionDuration: 'N/A',
         clickCount: 0,
-        pagesVisited: [url]
-      };
+        pagesVisited: [url],
+        sessionDuration: 'N/A',
+        city: 'N/A',
+        region: 'N/A',
+        country: 'N/A'
+    };
 
-      const sheet = doc.sheetsByIndex[0];
-      await sheet.addRow(sessionData);
+    sessions[sessionId] = sessionData;
 
-      res.status(200).send({ message: 'Sessão criada.', sessionId: sessionData.sessionId });
+    try {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        ipinfo(ip, IPINFO_API_KEY, (err, cLoc) => {
+            if (!err) {
+                sessionData.city = cLoc.city;
+                sessionData.region = cLoc.region;
+                sessionData.country = cLoc.country;
+            }
+            res.json({ message: 'Sessão criada.', sessionId });
+        });
+    } catch (error) {
+        console.error('Error creating session:', error);
+        res.status(500).json({ message: 'Erro ao criar sessão.' });
     }
-  });
 });
 
-app.post('/capture-click', async (req, res) => {
-  const { sessionId, timestamp } = req.body;
-
-  const rows = await doc.sheetsByIndex[0].getRows();
-  const sessionRow = rows.find(row => row.sessionId === sessionId);
-
-  if (sessionRow) {
-    sessionRow.clickCount = parseInt(sessionRow.clickCount) + 1;
-    sessionRow.timestamp = timestamp;
-    await sessionRow.save();
-    res.status(200).send({ message: 'Clique recebido.' });
-  } else {
-    res.status(404).send({ message: 'Sessão não encontrada.' });
-  }
+app.post('/capture-click', (req, res) => {
+    const { sessionId, timestamp } = req.body;
+    if (sessions[sessionId]) {
+        sessions[sessionId].clickCount += 1;
+        res.json({ message: 'Clique capturado.' });
+    } else {
+        res.status(404).json({ message: 'Sessão não encontrada.' });
+    }
 });
 
-app.post('/session-duration', async (req, res) => {
-  const { sessionId, duration } = req.body;
-
-  const rows = await doc.sheetsByIndex[0].getRows();
-  const sessionRow = rows.find(row => row.sessionId === sessionId);
-
-  if (sessionRow) {
-    sessionRow.sessionDuration = duration;
-    await sessionRow.save();
-    res.status(200).send({ message: 'Duração da sessão recebida.' });
-  } else {
-    res.status(404).send({ message: 'Sessão não encontrada.' });
-  }
+app.post('/session-duration', (req, res) => {
+    const { sessionId, duration } = req.body;
+    if (sessions[sessionId]) {
+        sessions[sessionId].sessionDuration = duration;
+        res.json({ message: 'Duração da sessão registrada.' });
+    } else {
+        res.status(404).json({ message: 'Sessão não encontrada.' });
+    }
 });
 
-app.post('/page-visit', async (req, res) => {
-  const { sessionId, url } = req.body;
-
-  const rows = await doc.sheetsByIndex[0].getRows();
-  const sessionRow = rows.find(row => row.sessionId === sessionId);
-
-  if (sessionRow) {
-    sessionRow.pagesVisited.push(url);
-    await sessionRow.save();
-    res.status(200).send({ message: 'Página visitada recebida.' });
-  } else {
-    res.status(404).send({ message: 'Sessão não encontrada.' });
-  }
+app.post('/page-visit', (req, res) => {
+    const { sessionId, url } = req.body;
+    if (sessions[sessionId]) {
+        sessions[sessionId].pagesVisited.push(url);
+        res.json({ message: 'Visita de página registrada.' });
+    } else {
+        res.status(404).json({ message: 'Sessão não encontrada.' });
+    }
 });
+
+function generateSessionId() {
+    return Math.random().toString(36).substr(2, 9);
+}
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });

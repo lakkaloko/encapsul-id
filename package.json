@@ -1,18 +1,17 @@
 {
   "name": "encapsul-id",
   "version": "1.0.0",
-  "description": "Projeto de monitoramento de cliques",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "google-spreadsheet": "^3.3.0",
-    "ipinfo": "^1.1.1",
-    "cors": "^2.8.5"
-  },
-  "author": "",
-  "license": "ISC"
+    "ipinfo": "^3.1.1",
+    "dotenv": "^10.0.0"
+  }
 }
