@@ -100,7 +100,7 @@ app.post('/collect-data', validateData, async (req, res) => {
             data.loadTime || '',
             data.sessionDuration || '',
             data.clickCount || 0
-        ];
+        ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
 
         console.log('Dados formatados para enviar para a planilha:', sessionData);
 
@@ -137,7 +137,7 @@ app.post('/capture-click', validateData, async (req, res) => {
         data.timestamp || '',
         '', '', '', '', '', '',
         '', 1, ''
-    ];
+    ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
 
     console.log('Dados formatados para enviar para a planilha:', formattedData);
 
@@ -156,7 +156,7 @@ app.post('/page-visit', validateData, async (req, res) => {
         sessions[sessionId].pagesVisited.push(url);
         const formattedData = [
             sessionId, '', '', '', '', url, timestamp, '', '', '', '', '', '', '', '', '', ''
-        ];
+        ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
         
         console.log('Dados formatados para enviar para a planilha:', formattedData);
 
@@ -164,7 +164,7 @@ app.post('/page-visit', validateData, async (req, res) => {
             await appendData(auth, formattedData);
             res.status(200).json({ message: 'Visita à página recebida e processada' });
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao processar dados' });
+            res.status 500).json({ error: 'Erro ao processar dados' });
         }
     } else {
         res.json({ message: 'Sessão não encontrada.' });
