@@ -5,9 +5,9 @@ const ipinfo = require('ipinfo');
 const app = express();
 
 // Configuração da porta para usar a variável de ambiente PORT ou 3000 como fallback
-const PORT = process.env.PORT || 3000;
+
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
-const GOOGLE_CREDS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const IPINFO_API_KEY = process.env.IPINFO_API_KEY;
 
 // Configuração do servidor
