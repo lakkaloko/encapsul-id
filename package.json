@@ -9,8 +9,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "body-parser": "^1.19.0",
-    "google-spreadsheet": "^3.0.11",
-    "ipinfo": "^2.0.0",
+    "google-spreadsheet": "^3.3.0",
+    "ipinfo": "^1.1.1",
     "cors": "^2.8.5"
   },
   "author": "",
