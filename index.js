@@ -5,7 +5,7 @@ const ipinfo = require('ipinfo');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Permite que o Render escolha a porta
+const PORT = process.env.PORT || 3000;
 
 // Carregue as credenciais do ambiente
 const creds = JSON.parse(fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS));
