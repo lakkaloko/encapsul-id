@@ -1,0 +1,77 @@
+<script>
+(function() {
+    function collectData() {
+        const data = {
+            userAgent: navigator.userAgent,
+            referrer: document.referrer,
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+            screenResolution: `${window.screen.width}x${window.screen.height}`,
+            deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+        };
+
+        fetch('https://5cfe-2804-30c-1618-bd00-c0d7-2b95-65f1-46b1.ngrok-free.app/capture-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Resposta recebida do servidor:', result);
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            const duration = Date.now() - performance.timing.navigationStart;
+            fetch('https://seu_servidor_ngrok/session-duration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ duration })
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            const element = event.target.tagName;
+            const timestamp = new Date().toISOString();
+            fetch('https://5cfe-2804-30c-1618-bd00-c0d7-2b95-65f1-46b1.ngrok-free.app/capture-click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ element, timestamp })
+            });
+        });
+
+        document.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+            const timestamp = new Date().toISOString();
+            fetch('https://5cfe-2804-30c-1618-bd00-c0d7-2b95-65f1-46b1.ngrok-free.app/capture-scroll', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ timestamp, scrollPosition })
+            });
+        });
+
+        window.addEventListener('load', function() {
+            const loadTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
+            fetch('https://5cfe-2804-30c-1618-bd00-c0d7-2b95-65f1-46b1.ngrok-free.app/page-load-time', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ loadTime })
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', collectData);
+})();
+</script>

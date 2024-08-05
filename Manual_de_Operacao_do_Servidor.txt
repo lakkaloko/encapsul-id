@@ -1,0 +1,86 @@
+
+# Manual de Operação do Servidor
+
+## 1. Preparação Inicial
+
+### 1.1 Instalação de Dependências
+
+Certifique-se de que todas as dependências do projeto estão instaladas.
+
+```bash
+npm install
+```
+
+### 1.2 Instalação do Nodemon
+
+Se ainda não estiver instalado, você pode instalar o `nodemon` globalmente:
+
+```bash
+npm install -g nodemon
+```
+
+## 2. Iniciando o Servidor
+
+### 2.1 Iniciar o Servidor com Nodemon
+
+Use o `nodemon` para iniciar o servidor e monitorar alterações no código.
+
+```bash
+nodemon index.js
+```
+
+- **Comando:** `nodemon index.js`
+- **Descrição:** Inicia o servidor e reinicia automaticamente ao detectar alterações nos arquivos monitorados.
+
+### 2.2 Confirmar o Funcionamento
+
+Verifique no terminal a mensagem indicando que o servidor está rodando:
+
+```
+Servidor rodando em http://localhost:3000
+```
+
+## 3. Monitoramento de Processos
+
+### 3.1 Verificar Processos Ativos
+
+Para verificar se o servidor está em execução e ouvindo a porta correta, utilize:
+
+```bash
+netstat -ano | findstr :3000
+```
+
+- **Porta:** 3000 (ou a porta que você configurou para seu servidor).
+
+## 4. Ajustes e Soluções de Problemas
+
+### 4.1 Corrigir Erro de Porta em Uso
+
+Se você encontrar o erro `EADDRINUSE: address already in use :::3000`, a porta 3000 já está sendo utilizada por outro processo. Para solucionar:
+
+1. **Identificar o Processo:** Use o comando abaixo para encontrar o ID do processo (PID) que está utilizando a porta 3000.
+
+    ```bash
+    netstat -ano | findstr :3000
+    ```
+
+2. **Finalizar o Processo:** Com o PID encontrado, você pode finalizar o processo com o comando:
+
+    ```bash
+    taskkill /PID <PID> /F
+    ```
+
+    Substitua `<PID>` pelo ID do processo identificado.
+
+3. **Reiniciar o Servidor:** Após liberar a porta, reinicie o servidor com `nodemon`.
+
+### 4.2 Corrigir Problemas com Nodemon
+
+Se o `nodemon` não estiver funcionando como esperado, verifique:
+
+- **Configuração:** Assegure-se de que a configuração do `nodemon` (se estiver usando um arquivo `nodemon.json`) está correta.
+- **Dependências:** Verifique se todas as dependências estão corretamente instaladas e atualizadas.
+
+## 5. Encerramento
+
+Para parar o servidor iniciado com `nodemon`, simplesmente interrompa o processo no terminal com `Ctrl + C`.

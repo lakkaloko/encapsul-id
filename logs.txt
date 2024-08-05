@@ -1,0 +1,544 @@
+registros na planilha
+
+2804:30c:1618:bd00:fc62:e089:a51:ac7b	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36	Chrome 127.0.0	Windows 10.0.0	https://builder.hostinger.com/	https://encapsul.shop/	2024-08-05T08:20:06.950Z	1920x1080	Desktop	Timbó	Santa Catarina	Brazil	856	N/A	1	https://encapsul.shop/								
+2804:30c:1618:bd00:fc62:e089:a51:ac7b	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36	Chrome 127.0.0	Windows 10.0.0	https://builder.hostinger.com/	https://encapsul.shop/	2024-08-05T08:20:08.142Z	1920x1080	Desktop	Timbó	Santa Catarina	Brazil	856	N/A	2	https://encapsul.shop/								
+2804:30c:1618:bd00:fc62:e089:a51:ac7b	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36	Chrome 127.0.0	Windows 10.0.0	https://builder.hostinger.com/	https://encapsul.shop/	2024-08-05T08:20:11.639Z	1920x1080	Desktop	Timbó	Santa Catarina	Brazil	856	N/A	3	https://encapsul.shop/								
+2804:30c:1618:bd00:fc62:e089:a51:ac7b	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36	Chrome 127.0.0	Windows 10.0.0	https://builder.hostinger.com/	https://encapsul.shop/	2024-08-05T08:20:11.639Z	1920x1080	Desktop	Timbó	Santa Catarina	Brazil	856	14805	3	https://encapsul.shop/								
+2804:30c:1618:bd00:fc62:e089:a51:ac7b	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36	Chrome 127.0.0	Windows 10.0.0	https://builder.hostinger.com/	https://encapsul.shop/resveratrol	2024-08-05T08:20:12.236Z	1920x1080	Desktop	Timbó	Santa Catarina	Brazil	856	14805	3	https://encapsul.shop/, https://encapsul.shop/resveratrol				
+
+
+registyros nop terminal
+
+Microsoft Windows [versão 10.0.22631.3880]
+(c) Microsoft Corporation. Todos os direitos reservados.
+
+C:\Users\rodri\google-sheets-backend>node index.js
+Servidor rodando na porta 3000
+Recebendo sessionId para duração da sessão: 1h45wab3bpi
+Sessões armazenadas: {}
+Sessão não encontrada para sessionId: 1h45wab3bpi
+Recebendo sessionId para visita de página: 1h45wab3bpi
+Sessões armazenadas: {}
+Sessão não encontrada para sessionId: 1h45wab3bpi
+Geolocation data: {
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  continent_code: 'SA',
+  continent_name: 'South America',
+  country_code2: 'BR',
+  country_code3: 'BRA',
+  country_name: 'Brazil',
+  country_name_official: 'Federative Republic of Brazil',
+  country_capital: 'Brasilia',
+  state_prov: 'Santa Catarina',
+  state_code: 'BR-SC',
+  district: '',
+  city: 'Timbó',
+  zipcode: '89120-000',
+  latitude: '-26.82461',
+  longitude: '-49.27102',
+  is_eu: false,
+  calling_code: '+55',
+  country_tld: '.br',
+  languages: 'pt-BR,es,en,fr',
+  country_flag: 'https://ipgeolocation.io/static/flags/br_64.png',
+  geoname_id: '3446465',
+  isp: 'UNIFIQUE TELECOMUNICACOES S/A',
+  connection_type: '',
+  organization: 'UNIFIQUE TELECOMUNICACOES S/A',
+  country_emoji: '🇧🇷',
+  currency: { code: 'BRL', name: 'Brazilian Real', symbol: 'R$' },
+  time_zone: {
+    name: 'America/Sao_Paulo',
+    offset: -3,
+    offset_with_dst: -3,
+    current_time: '2024-08-05 05:19:58.250-0300',
+    current_time_unix: 1722845998.25,
+    is_dst: false,
+    dst_savings: 0,
+    dst_exists: false,
+    dst_start: '',
+    dst_end: ''
+  }
+}
+Dados recebidos no servidor: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/',
+  timestamp: '2024-08-05T08:19:57.303Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 0,
+  pagesVisited: [ 'https://encapsul.shop/' ]
+}
+Sessão criada: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/',
+  timestamp: '2024-08-05T08:19:57.303Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 0,
+  pagesVisited: [ 'https://encapsul.shop/' ]
+}
+Recebendo sessionId para captura de clique: ex1rt7mfp68
+Sessões armazenadas: {
+  ex1rt7mfp68: {
+    sessionId: 'ex1rt7mfp68',
+    ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    referrer: 'https://builder.hostinger.com/',
+    url: 'https://encapsul.shop/',
+    timestamp: '2024-08-05T08:19:57.303Z',
+    screenResolution: '1920x1080',
+    deviceType: 'Desktop',
+    loadTime: 856,
+    city: 'Timbó',
+    region: 'Santa Catarina',
+    country: 'Brazil',
+    browser: 'Chrome 127.0.0',
+    os: 'Windows 10.0.0',
+    sessionDuration: 'N/A',
+    clickCount: 0,
+    pagesVisited: [ 'https://encapsul.shop/' ]
+  }
+}
+Clique capturado: 2024-08-05T08:20:06.950Z Total de cliques: 1
+Sessão atualizada: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/',
+  timestamp: '2024-08-05T08:20:06.950Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 1,
+  pagesVisited: [ 'https://encapsul.shop/' ]
+}
+Enviando dados para o Google Sheets: [
+  [
+    '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    'Chrome 127.0.0',
+    'Windows 10.0.0',
+    'https://builder.hostinger.com/',
+    'https://encapsul.shop/',
+    '2024-08-05T08:20:06.950Z',
+    '1920x1080',
+    'Desktop',
+    'Timbó',
+    'Santa Catarina',
+    'Brazil',
+    856,
+    'N/A',
+    1,
+    'https://encapsul.shop/'
+  ]
+]
+Resposta do Google Sheets: {
+  spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+  tableRange: 'Sheet1!A78:P247',
+  updates: {
+    spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+    updatedRange: 'Sheet1!A248:P248',
+    updatedRows: 1,
+    updatedColumns: 16,
+    updatedCells: 16
+  }
+}
+Recebendo sessionId para captura de clique: ex1rt7mfp68
+Sessões armazenadas: {
+  ex1rt7mfp68: {
+    sessionId: 'ex1rt7mfp68',
+    ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    referrer: 'https://builder.hostinger.com/',
+    url: 'https://encapsul.shop/',
+    timestamp: '2024-08-05T08:20:06.950Z',
+    screenResolution: '1920x1080',
+    deviceType: 'Desktop',
+    loadTime: 856,
+    city: 'Timbó',
+    region: 'Santa Catarina',
+    country: 'Brazil',
+    browser: 'Chrome 127.0.0',
+    os: 'Windows 10.0.0',
+    sessionDuration: 'N/A',
+    clickCount: 1,
+    pagesVisited: [ 'https://encapsul.shop/' ]
+  }
+}
+Clique capturado: 2024-08-05T08:20:08.142Z Total de cliques: 2
+Sessão atualizada: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/',
+  timestamp: '2024-08-05T08:20:08.142Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 2,
+  pagesVisited: [ 'https://encapsul.shop/' ]
+}
+Enviando dados para o Google Sheets: [
+  [
+    '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    'Chrome 127.0.0',
+    'Windows 10.0.0',
+    'https://builder.hostinger.com/',
+    'https://encapsul.shop/',
+    '2024-08-05T08:20:08.142Z',
+    '1920x1080',
+    'Desktop',
+    'Timbó',
+    'Santa Catarina',
+    'Brazil',
+    856,
+    'N/A',
+    2,
+    'https://encapsul.shop/'
+  ]
+]
+Resposta do Google Sheets: {
+  spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+  tableRange: 'Sheet1!A78:P248',
+  updates: {
+    spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+    updatedRange: 'Sheet1!A249:P249',
+    updatedRows: 1,
+    updatedColumns: 16,
+    updatedCells: 16
+  }
+}
+Recebendo sessionId para captura de clique: ex1rt7mfp68
+Sessões armazenadas: {
+  ex1rt7mfp68: {
+    sessionId: 'ex1rt7mfp68',
+    ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    referrer: 'https://builder.hostinger.com/',
+    url: 'https://encapsul.shop/',
+    timestamp: '2024-08-05T08:20:08.142Z',
+    screenResolution: '1920x1080',
+    deviceType: 'Desktop',
+    loadTime: 856,
+    city: 'Timbó',
+    region: 'Santa Catarina',
+    country: 'Brazil',
+    browser: 'Chrome 127.0.0',
+    os: 'Windows 10.0.0',
+    sessionDuration: 'N/A',
+    clickCount: 2,
+    pagesVisited: [ 'https://encapsul.shop/' ]
+  }
+}
+Clique capturado: 2024-08-05T08:20:11.639Z Total de cliques: 3
+Sessão atualizada: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/',
+  timestamp: '2024-08-05T08:20:11.639Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 3,
+  pagesVisited: [ 'https://encapsul.shop/' ]
+}
+Enviando dados para o Google Sheets: [
+  [
+    '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    'Chrome 127.0.0',
+    'Windows 10.0.0',
+    'https://builder.hostinger.com/',
+    'https://encapsul.shop/',
+    '2024-08-05T08:20:11.639Z',
+    '1920x1080',
+    'Desktop',
+    'Timbó',
+    'Santa Catarina',
+    'Brazil',
+    856,
+    'N/A',
+    3,
+    'https://encapsul.shop/'
+  ]
+]
+Recebendo sessionId para duração da sessão: ex1rt7mfp68
+Sessões armazenadas: {
+  ex1rt7mfp68: {
+    sessionId: 'ex1rt7mfp68',
+    ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    referrer: 'https://builder.hostinger.com/',
+    url: 'https://encapsul.shop/',
+    timestamp: '2024-08-05T08:20:11.639Z',
+    screenResolution: '1920x1080',
+    deviceType: 'Desktop',
+    loadTime: 856,
+    city: 'Timbó',
+    region: 'Santa Catarina',
+    country: 'Brazil',
+    browser: 'Chrome 127.0.0',
+    os: 'Windows 10.0.0',
+    sessionDuration: 'N/A',
+    clickCount: 3,
+    pagesVisited: [ 'https://encapsul.shop/' ]
+  }
+}
+Duração da sessão atualizada: 14805
+Sessão atualizada: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/',
+  timestamp: '2024-08-05T08:20:11.639Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 14805,
+  clickCount: 3,
+  pagesVisited: [ 'https://encapsul.shop/' ]
+}
+Enviando dados para o Google Sheets: [
+  [
+    '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    'Chrome 127.0.0',
+    'Windows 10.0.0',
+    'https://builder.hostinger.com/',
+    'https://encapsul.shop/',
+    '2024-08-05T08:20:11.639Z',
+    '1920x1080',
+    'Desktop',
+    'Timbó',
+    'Santa Catarina',
+    'Brazil',
+    856,
+    14805,
+    3,
+    'https://encapsul.shop/'
+  ]
+]
+Resposta do Google Sheets: {
+  spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+  tableRange: 'Sheet1!A78:P249',
+  updates: {
+    spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+    updatedRange: 'Sheet1!A250:P250',
+    updatedRows: 1,
+    updatedColumns: 16,
+    updatedCells: 16
+  }
+}
+Resposta do Google Sheets: {
+  spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+  tableRange: 'Sheet1!A78:P250',
+  updates: {
+    spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+    updatedRange: 'Sheet1!A251:P251',
+    updatedRows: 1,
+    updatedColumns: 16,
+    updatedCells: 16
+  }
+}
+Recebendo sessionId para visita de página: ex1rt7mfp68
+Sessões armazenadas: {
+  ex1rt7mfp68: {
+    sessionId: 'ex1rt7mfp68',
+    ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    referrer: 'https://builder.hostinger.com/',
+    url: 'https://encapsul.shop/',
+    timestamp: '2024-08-05T08:20:11.639Z',
+    screenResolution: '1920x1080',
+    deviceType: 'Desktop',
+    loadTime: 856,
+    city: 'Timbó',
+    region: 'Santa Catarina',
+    country: 'Brazil',
+    browser: 'Chrome 127.0.0',
+    os: 'Windows 10.0.0',
+    sessionDuration: 14805,
+    clickCount: 3,
+    pagesVisited: [ 'https://encapsul.shop/' ]
+  }
+}
+Página visitada: https://encapsul.shop/resveratrol
+Sessão atualizada: {
+  sessionId: 'ex1rt7mfp68',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://builder.hostinger.com/',
+  url: 'https://encapsul.shop/resveratrol',
+  timestamp: '2024-08-05T08:20:12.236Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 856,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 14805,
+  clickCount: 3,
+  pagesVisited: [ 'https://encapsul.shop/', 'https://encapsul.shop/resveratrol' ]
+}
+Enviando dados para o Google Sheets: [
+  [
+    '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+    'Chrome 127.0.0',
+    'Windows 10.0.0',
+    'https://builder.hostinger.com/',
+    'https://encapsul.shop/resveratrol',
+    '2024-08-05T08:20:12.236Z',
+    '1920x1080',
+    'Desktop',
+    'Timbó',
+    'Santa Catarina',
+    'Brazil',
+    856,
+    14805,
+    3,
+    'https://encapsul.shop/, https://encapsul.shop/resveratrol'
+  ]
+]
+Resposta do Google Sheets: {
+  spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+  tableRange: 'Sheet1!A78:P251',
+  updates: {
+    spreadsheetId: '1xhmVOg-xucjDNt-8nRlIPWpOt-GnVGCTjHoLi43BC74',
+    updatedRange: 'Sheet1!A252:P252',
+    updatedRows: 1,
+    updatedColumns: 16,
+    updatedCells: 16
+  }
+}
+Geolocation data: {
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  continent_code: 'SA',
+  continent_name: 'South America',
+  country_code2: 'BR',
+  country_code3: 'BRA',
+  country_name: 'Brazil',
+  country_name_official: 'Federative Republic of Brazil',
+  country_capital: 'Brasilia',
+  state_prov: 'Santa Catarina',
+  state_code: 'BR-SC',
+  district: '',
+  city: 'Timbó',
+  zipcode: '89120-000',
+  latitude: '-26.82461',
+  longitude: '-49.27102',
+  is_eu: false,
+  calling_code: '+55',
+  country_tld: '.br',
+  languages: 'pt-BR,es,en,fr',
+  country_flag: 'https://ipgeolocation.io/static/flags/br_64.png',
+  geoname_id: '3446465',
+  isp: 'UNIFIQUE TELECOMUNICACOES S/A',
+  connection_type: '',
+  organization: 'UNIFIQUE TELECOMUNICACOES S/A',
+  country_emoji: '🇧🇷',
+  currency: { code: 'BRL', name: 'Brazilian Real', symbol: 'R$' },
+  time_zone: {
+    name: 'America/Sao_Paulo',
+    offset: -3,
+    offset_with_dst: -3,
+    current_time: '2024-08-05 05:20:13.294-0300',
+    current_time_unix: 1722846013.294,
+    is_dst: false,
+    dst_savings: 0,
+    dst_exists: false,
+    dst_start: '',
+    dst_end: ''
+  }
+}
+Dados recebidos no servidor: {
+  sessionId: 'axbm02izbmv',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://encapsul.shop/',
+  url: 'https://encapsul.shop/resveratrol',
+  timestamp: '2024-08-05T08:20:12.401Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 500,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 0,
+  pagesVisited: [ 'https://encapsul.shop/resveratrol' ]
+}
+Sessão criada: {
+  sessionId: 'axbm02izbmv',
+  ip: '2804:30c:1618:bd00:fc62:e089:a51:ac7b',
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+  referrer: 'https://encapsul.shop/',
+  url: 'https://encapsul.shop/resveratrol',
+  timestamp: '2024-08-05T08:20:12.401Z',
+  screenResolution: '1920x1080',
+  deviceType: 'Desktop',
+  loadTime: 500,
+  city: 'Timbó',
+  region: 'Santa Catarina',
+  country: 'Brazil',
+  browser: 'Chrome 127.0.0',
+  os: 'Windows 10.0.0',
+  sessionDuration: 'N/A',
+  clickCount: 0,
+  pagesVisited: [ 'https://encapsul.shop/resveratrol' ]
+}
+				

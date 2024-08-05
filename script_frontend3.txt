@@ -1,0 +1,90 @@
+<script>
+    (function() {
+        let sessionId = localStorage.getItem('sessionId');
+        if (!sessionId) {
+            sessionId = Math.random().toString(36).substring(2);
+            localStorage.setItem('sessionId', sessionId);
+        }
+
+        function collectData() {
+            const data = {
+                sessionId: sessionId,
+                ip: null, // Capturado no servidor
+                userAgent: navigator.userAgent,
+                referrer: document.referrer,
+                url: window.location.href,
+                timestamp: new Date().toISOString(),
+                screenResolution: `${window.screen.width}x${window.screen.height}`,
+                deviceType: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+                loadTime: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart
+            };
+
+            console.log('Dados a serem enviados:', data);
+
+            fetch('https://encapsul-id.onrender.com/create-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(jsonResponse => {
+                console.log('Resposta recebida do servidor:', jsonResponse);
+                if (jsonResponse.sessionId) {
+                    sessionId = jsonResponse.sessionId;
+                    localStorage.setItem('sessionId', sessionId);
+                }
+            })
+            .catch(error => console.error('Erro ao enviar dados:', error));
+        }
+
+        window.addEventListener('load', () => {
+            collectData();
+        });
+
+        let startTime = new Date();
+        window.addEventListener('beforeunload', () => {
+            const duration = new Date() - startTime;
+            fetch('https://encapsul-id.onrender.com/session-duration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId, duration })
+            })
+            .catch(error => console.error('Erro ao enviar duração da sessão:', error));
+
+            fetch('https://encapsul-id.onrender.com/end-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId })
+            })
+            .catch(error => console.error('Erro ao encerrar sessão:', error));
+        });
+
+        document.addEventListener('click', (event) => {
+            fetch('https://encapsul-id.onrender.com/capture-click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId, timestamp: new Date().toISOString() })
+            })
+            .catch(error => console.error('Erro ao enviar clique:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://encapsul-id.onrender.com/page-visit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId, url: window.location.href })
+            })
+            .catch(error => console.error('Erro ao enviar página visitada:', error));
+        });
+    })();
+</script>

@@ -1,0 +1,79 @@
+<script>
+    (function() {
+        let sessionId = Math.random().toString(36).substring(2);
+
+        function collectData() {
+            const data = {
+                sessionId: sessionId,
+                ip: null, // Capturado no servidor
+                userAgent: navigator.userAgent,
+                referrer: document.referrer,
+                url: window.location.href,
+                timestamp: new Date().toISOString(),
+                screenResolution: `${window.screen.width}x${window.screen.height}`,
+                deviceType: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+                loadTime: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart
+            };
+
+            console.log('Dados a serem enviados:', data);
+
+            fetch('https://2a72-2804-30c-1618-bd00-cdb0-6f5b-d97a-af18.ngrok-free.app/capture-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta do servidor');
+                }
+                return response.json();
+            })
+            .then(jsonResponse => {
+                console.log('Resposta recebida do servidor:', jsonResponse);
+            })
+            .catch(error => console.error('Erro ao enviar dados:', error));
+        }
+
+        window.addEventListener('load', () => {
+            collectData();
+        });
+
+        let startTime = new Date();
+        window.addEventListener('beforeunload', () => {
+            const duration = new Date() - startTime;
+            fetch('https://2a72-2804-30c-1618-bd00-cdb0-6f5b-d97a-af18.ngrok-free.app/session-duration', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId, duration })
+            })
+            .catch(error => console.error('Erro ao enviar duração da sessão:', error));
+        });
+
+        document.addEventListener('click', (event) => {
+            fetch('https://2a72-2804-30c-1618-bd00-cdb0-6f5b-d97a-af18.ngrok-free.app/capture-click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId, timestamp: new Date().toISOString() })
+            })
+            .catch(error => console.error('Erro ao enviar clique:', error));
+        });
+
+        // Verifique a navegação para capturar páginas visitadas
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://2a72-2804-30c-1618-bd00-cdb0-6f5b-d97a-af18.ngrok-free.app/page-visit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ sessionId, url: window.location.href })
+            })
+            .catch(error => console.error('Erro ao enviar página visitada:', error));
+        });
+    })();
+</script>

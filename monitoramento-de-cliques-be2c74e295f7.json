@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "monitoramento-de-cliques",
+  "private_key_id": "be2c74e295f7240d40d3f5b3a3b628bd3c353fa7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDMIvfeCRTG45Wr\nT5w6+rtP7N7iDWBAHtq0tWnKe5eDwKFZKT1thN7mzLvzIdkZZmk/VqoM2MU1+IZI\ntHwx6P809NRDVan0b0xianhkOGrUIYVDNRjFeiCc29/wtWWUGmhQJ7i33CiXOd/H\n4tnMFIrLkh/57b+fTF93ffUSAAc7frosfoI9SJKWSiwnTymRV+Dnc4FbLLjyK92K\nA2Rpmb7MOIYr0Y/85P1jshMBnjbJzNPadDOB9tSYGZvovLW6XCDxVwn7PSyVKqAT\nifOJMG7Dx+RkaziFnch033EH3akdFj6TLPSpd3DoBL7G+VResLQRDe6xmpGm9A69\ntkCOlPutAgMBAAECggEACQdi6dyCTBRfglGQb2tiQt653PW1KXYz5i+VRkdrztVY\n+ECYCZ1e3oZ0/wP4PjoGswPPnFHaJyZJijMGwI5gUKSjiXbjKtSMDwOhNOLp7AgE\n2jwhpFpf0ZBID2AhO15k+WadskQikiMVKsTLLU5F9UsOmaynqma5B5KioZvZYLWI\no1Yk3/lAAPRy4lNH5nVmgWUAH/VhnY+AauNrZJ8M2r0SunKkkHQdy5c6iTYRp5ry\nai20WFt8czy2Qz2bXmO8zB5U7nPeMEFeO/sBtJFhqdC1LCpuVrE2L+j4ZdUvIMFt\nkKaljDy4bzaG8rSClaKb7ieQWBbSudTu/5y5JIDZAQKBgQDuzxXLp7kg2V1bpJoZ\nBANT5mvG/7u9h8u0FDuZ2FEBZr+I9TFRyx7yV0XL4m0dr66oKuztJiwD/TcDiNY1\nrTDOZjBu8vwyb2o5oAdmf0mBiUoc2pxDcN4AxtdAxEcZCzyYmZCXTF9/5ebPvxC4\n3kD0IL1gk3oXJpbP/eXOirMLaQKBgQDa1OujcEedlW/j7kMd0pLCGa9G/XUVD9dF\n+zYpeYRt3w+0P1Yk9POmvzPrtHO63iCVNncnrYeBWcgV5+tVTnwOfmRzwB3ye4Q+\nLXQnVe9TZKx/+9Sfuh4GOf/rIS6AAF+REQaA6BR3m8L0GnGtrpvjMqfTn7syJE9G\n04EC+zp5pQKBgEsSOm3NCftzmU+HzRF0G3+yfcsO9Xu9RqITgjD4uW5RWIC7Y4es\n7MuN99kCEv80DRm8dMKQL2IJpdOsnno9OYyIv00BgZpxP9lhnzHvbbIU8IFlj537\nyy4/U8d+bENJLwFhtPx6+8J/CTHhhGY5J/4WlLHZapYAgYRc8nMdUu+RAoGBAKVK\nOoqDHrT60T8bEvsNuOh/uhMnEy7LflFPxMNjFBJhcF03kfvsQbXrqm4ZKWk2qunJ\n8Aq6WiXsCOPy/6C53Z6c/Ycoz/X+Mg89CgVENbeJzXoGX74eONt/J70UnSj2HzlV\n4NGxevQ1ZPY4mzETOJBODNIeTqk7H95hl4sG9E45AoGAYWsTiI6d3O4m8EDHHxCu\n6Dg32ReZ7FiFcBJYGZFnJLPfcp37JB6dPkzN5ND0MSqFdkQYdX8MVeI3jcnGxWv4\nM2np0+J4qs9of8qWUvx9hP2zeNCIC1oDqPboLjdgwcNnXwbsRVTocFbl2auKHtSi\npnLILLC9NmuxUUWsv1BfAVM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "my-google-sheets-service-accou@monitoramento-de-cliques.iam.gserviceaccount.com",
+  "client_id": "105476459399264240509",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/my-google-sheets-service-accou%40monitoramento-de-cliques.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
