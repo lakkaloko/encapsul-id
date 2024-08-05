@@ -164,7 +164,7 @@ app.post('/page-visit', validateData, async (req, res) => {
             await appendData(auth, formattedData);
             res.status(200).json({ message: 'Visita à página recebida e processada' });
         } catch (error) {
-            res.status 500).json({ error: 'Erro ao processar dados' });
+            res.status(500).json({ error: 'Erro ao processar dados' });
         }
     } else {
         res.json({ message: 'Sessão não encontrada.' });
