@@ -2,19 +2,22 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const ipinfo = require('ipinfo');
+const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3000; // Permite que o Render escolha a porta
+
+// Carregue as credenciais do ambiente
+const creds = JSON.parse(fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS));
+const ipinfoApiKey = process.env.IPINFO_API_KEY;
+const spreadsheetId = process.env.SPREADSHEET_ID;
 
 app.use(bodyParser.json());
 
-const doc = new GoogleSpreadsheet(process.env.SPREADSHEET_ID);
+const doc = new GoogleSpreadsheet(spreadsheetId);
 
 async function accessSpreadsheet() {
-  await doc.useServiceAccountAuth({
-    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  });
+  await doc.useServiceAccountAuth(creds);
   await doc.loadInfo(); // Carrega as informações da planilha
 }
 
@@ -24,7 +27,7 @@ app.post('/create-session', async (req, res) => {
   const { userAgent, referrer, url } = req.body;
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-  ipinfo(ip, async (err, cLoc) => {
+  ipinfo(ip, ipinfoApiKey, async (err, cLoc) => {
     if (err) {
       console.log(err);
       res.status(500).send({ message: 'Erro ao obter geolocalização' });
@@ -91,7 +94,7 @@ app.post('/page-visit', async (req, res) => {
   const sessionRow = rows.find(row => row.sessionId === sessionId);
 
   if (sessionRow) {
-    sessionRow.pagesVisited += `, ${url}`;
+    sessionRow.pagesVisited.push(url);
     await sessionRow.save();
     res.status(200).send({ message: 'Página visitada recebida.' });
   } else {
