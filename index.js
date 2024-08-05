@@ -108,8 +108,9 @@ app.post('/collect-data', validateData, async (req, res) => {
             await appendData(auth, sessionData);
             res.status(200).json({ message: 'Dados recebidos e processados' });
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao processar dados' });
-        }
+        console.error('Erro ao enviar dados para a planilha:', error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'Erro ao processar dados', details: error.message });
+    }
     });
 });
 
