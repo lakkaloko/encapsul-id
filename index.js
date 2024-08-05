@@ -50,7 +50,7 @@ async function appendData(auth, data) {
     const client = await auth.getClient();
     const request = {
         spreadsheetId: SPREADSHEET_ID,
-        range: 'Página1!A1:Z1', // Altere conforme necessário
+        range: 'Sheet1!A1:Z1', // Altere conforme necessário
         valueInputOption: 'USER_ENTERED',
         insertDataOption: 'INSERT_ROWS',
         resource: {
