@@ -2,21 +2,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ipinfo = require('ipinfo');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const creds = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 const app = express();
 app.use(bodyParser.json());
 
 // Usando variáveis de ambiente para configurar a porta e as credenciais
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 10000;
 const IPINFO_TOKEN = process.env.IPINFO_API_KEY;
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
-const GOOGLE_CREDS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 // Inicializando a planilha do Google
 const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
 async function accessSpreadsheet() {
-  await doc.useServiceAccountAuth(GOOGLE_CREDS);
+  await doc.useServiceAccountAuth(creds);
   await doc.loadInfo();
 }
 
