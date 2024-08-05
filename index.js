@@ -5,7 +5,7 @@ const ipinfo = require('ipinfo');
 const app = express();
 
 // Iniciar o servidor na porta configurada
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 3000;
     console.log(`Servidor rodando na porta ${PORT}`);
 });
 
