@@ -7,7 +7,6 @@ const app = express();
 // Iniciar o servidor na porta configurada
 const PORT = process.env.PORT || 10000;
     console.log(`Servidor rodando na porta ${PORT}`);
-});
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
