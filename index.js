@@ -2,23 +2,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const ipinfo = require('ipinfo');
-const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Carregue as credenciais do ambiente
-const creds = JSON.parse(fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS));
+app.use(bodyParser.json());
+
+const creds = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const ipinfoApiKey = process.env.IPINFO_API_KEY;
 const spreadsheetId = process.env.SPREADSHEET_ID;
-
-app.use(bodyParser.json());
 
 const doc = new GoogleSpreadsheet(spreadsheetId);
 
 async function accessSpreadsheet() {
   await doc.useServiceAccountAuth(creds);
-  await doc.loadInfo(); // Carrega as informações da planilha
+  await doc.loadInfo();
 }
 
 accessSpreadsheet().catch(console.error);
@@ -48,7 +46,7 @@ app.post('/create-session', async (req, res) => {
         pagesVisited: [url]
       };
 
-      const sheet = doc.sheetsByIndex[0]; // ou você pode usar doc.sheetsByTitle['Nome da aba']
+      const sheet = doc.sheetsByIndex[0];
       await sheet.addRow(sessionData);
 
       res.status(200).send({ message: 'Sessão criada.', sessionId: sessionData.sessionId });
