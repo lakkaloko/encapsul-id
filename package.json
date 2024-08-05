@@ -1,12 +1,14 @@
 {
-  "name": "your-project-name",
+  "name": "encapsul-id",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "express": "^4.19.2",
-    "geoip-lite": "^1.4.2",
-    "google-spreadsheet": "^4.1.2",
-    "ipinfo": "^1.5.1"
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0",
+    "ipinfo": "^1.0.0",
+    "google-spreadsheet": "^3.2.0"
   }
 }
