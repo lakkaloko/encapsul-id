@@ -10,19 +10,16 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_CREDS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 const IPINFO_API_KEY = process.env.IPINFO_API_KEY;
 
+// Configuração do servidor
 app.use(cors());
 app.use(express.json());
 
-// Definir a variável sessions
-const sessions = {};
-
-// Autenticação com Google
+// Configuração de autenticação do Google Sheets
 const auth = new google.auth.GoogleAuth({
-    credentials: JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS),
+    credentials: GOOGLE_CREDS,
     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
 });
-
-const sheets = google.sheets({version: 'v4', auth});
+const sheets = google.sheets({ version: 'v4', auth });
 
 // Função para validar os dados recebidos
 const validateData = (req, res, next) => {
@@ -68,6 +65,9 @@ async function appendData(auth, data) {
         throw error;
     }
 }
+
+// Função para lidar com dados de sessão
+const sessions = {};
 
 // Rota para coletar dados
 app.post('/collect-data', validateData, async (req, res) => {
