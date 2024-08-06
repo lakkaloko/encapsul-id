@@ -77,8 +77,9 @@ app.post('/collect-data', validateData, async (req, res) => {
     console.log('Dados recebidos:', data);
 
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const clientIp = ip.split(',')[0].trim(); // Captura o primeiro IP e remove espaços extras
 
-    ipinfo(ip, IPINFO_API_KEY, async (err, cLoc) => {
+    ipinfo(clientIp, IPINFO_API_KEY, async (err, cLoc) => {
         if (err) {
             console.error('Erro ao obter localização IP:', err);
             return res.status(500).json({ error: 'Erro ao obter localização IP' });
@@ -97,7 +98,7 @@ app.post('/collect-data', validateData, async (req, res) => {
         }
 
         const sessionData = [
-            ip || '',
+            clientIp || '',
             data.sessionId || '',
             data.userAgent || '',
             data.browser || '',
