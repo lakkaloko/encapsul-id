@@ -23,6 +23,26 @@ const auth = new google.auth.GoogleAuth({
 });
 const sheets = google.sheets({ version: 'v4', auth });
 
+// Função para converter timestamp para datetime
+function convertTimestampToDateTime(timestamp) {
+    const date = new Date(timestamp);
+    return date.toLocaleString(); // Formato legível de data e hora
+}
+
+// Função para simplificar o user agent
+function simplifyUserAgent(userAgent) {
+    // Pode ser ajustado conforme necessário para mais simplificações
+    if (userAgent.includes("Android")) {
+        return "Android Device";
+    } else if (userAgent.includes("iPhone")) {
+        return "iPhone Device";
+    } else if (userAgent.includes("Windows")) {
+        return "Windows Device";
+    } else {
+        return "Other Device";
+    }
+}
+
 // Função para validar os dados recebidos
 const validateData = (req, res, next) => {
     const data = req.body;
@@ -100,12 +120,12 @@ app.post('/collect-data', validateData, async (req, res) => {
         const sessionData = [
             clientIp || '',
             data.sessionId || '',
-            data.userAgent || '',
+            simplifyUserAgent(data.userAgent) || '',
             data.browser || '',
             data.os || '',
             data.referrer || '',
             data.url || '',
-            data.timestamp || '',
+            convertTimestampToDateTime(data.timestamp) || '',
             data.screenResolution || '',
             data.deviceType || '',
             cLoc ? cLoc.city : 'N/A',
@@ -159,7 +179,7 @@ app.post('/page-visit', validateData, async (req, res) => {
         sessions[sessionId].pagesVisited = (sessions[sessionId].pagesVisited || []).concat(url);
         const formattedData = [
             '',
-            sessionId, '', '', '', url, timestamp, '', '', '', '', '', '', '', '', '', ''
+            sessionId, '', '', '', url, convertTimestampToDateTime(timestamp), '', '', '', '', '', '', '', '', '', ''
         ].map(item => item === undefined ? '' : item); // Substituir undefined por ''
         
         console.log('Dados formatados para enviar para a planilha:', formattedData);
