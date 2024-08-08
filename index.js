@@ -142,7 +142,7 @@ app.post('/collect-data', validateData, async (req, res) => {
     const sessionData = [
         ip || '',
         data.sessionId || '',
-        simplifyUserAgent(data.userAgent) || '',
+        simplifyUserAgent(data.userAgent) || 'Unknown',
         data.browser || 'Unknown',
         data.os || 'Unknown',
         data.referrer || 'Unknown',
@@ -252,7 +252,7 @@ app.post('/page-visit', validateData, async (req, res) => {
     const formattedData = [
         sessions[data.sessionId].ip || '',
         data.sessionId || '',
-        simplifyUserAgent(data.userAgent) || '',
+        simplifyUserAgent(data.userAgent) || 'Unknown',
         data.browser || 'Unknown',
         data.os || 'Unknown',
         data.referrer || 'Unknown',
