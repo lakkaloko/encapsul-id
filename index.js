@@ -139,30 +139,30 @@ app.post('/collect-data', validateData, async (req, res) => {
         };
     }
 
-    const sessionData = {
-        ip: ip || '',
-        sessionId: data.sessionId || '',
-        userAgent: simplifyUserAgent(data.userAgent) || 'Unknown',
-        browser: data.browser || 'Unknown',
-        os: data.os || 'Unknown',
-        referrer: data.referrer || 'Unknown',
-        url: data.url || '',
-        timestamp: convertTimestampToDateTime(data.timestamp) || '',
-        screenResolution: data.screenResolution || 'Unknown',
-        deviceType: data.deviceType || 'Unknown',
-        city: cLoc ? cLoc.city : 'N/A',
-        region: cLoc ? cLoc.region : 'N/A',
-        country: cLoc ? cLoc.country : 'N/A',
-        loadTime: data.loadTime || 'Unknown',
-        sessionDuration: data.sessionDuration || 'Unknown',
-        clickCount: sessions[data.sessionId].clickCount || 0,
-        pagesVisited: sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : ''
-    };
+    const sessionData = [
+        ip || '',
+        data.sessionId || '',
+        simplifyUserAgent(data.userAgent) || 'No User Agent',
+        data.browser || 'No Browser Info',
+        data.os || 'No OS Info',
+        data.referrer || 'No Referrer',
+        data.url || '',
+        convertTimestampToDateTime(data.timestamp) || 'No Timestamp',
+        data.screenResolution || 'No Screen Resolution',
+        data.deviceType || 'No Device Type',
+        cLoc ? cLoc.city : 'No City Info',
+        cLoc ? cLoc.region : 'No Region Info',
+        cLoc ? cLoc.country : 'No Country Info',
+        data.loadTime || 'No Load Time',
+        data.sessionDuration || 'No Session Duration',
+        sessions[data.sessionId].clickCount || 0,
+        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : 'No Pages Visited'
+    ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(sessionData, null, 2));
 
     try {
-        await appendData(auth, Object.values(sessionData));
+        await appendData(auth, sessionData);
         res.status(200).json({ message: 'Dados recebidos e processados' });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao processar dados' });
@@ -182,30 +182,21 @@ app.post('/session-duration', validateData, async (req, res) => {
         };
     }
 
-    const formattedData = {
-        ip: sessions[data.sessionId].ip || '',
-        sessionId: data.sessionId || '',
-        userAgent: '',
-        browser: '',
-        os: '',
-        referrer: '',
-        url: '',
-        timestamp: new Date().toISOString(),
-        screenResolution: '',
-        deviceType: '',
-        city: '',
-        region: '',
-        country: '',
-        loadTime: '',
-        sessionDuration: sessions[data.sessionId].sessionDuration || 0,
-        clickCount: sessions[data.sessionId].clickCount || 0,
-        pagesVisited: ''
-    };
+    const formattedData = [
+        sessions[data.sessionId].ip || '',
+        data.sessionId || '',
+        '', '', '', '', '',
+        new Date().toISOString(),
+        '', '', '', '', '',
+        '', sessions[data.sessionId].sessionDuration || 0,
+        sessions[data.sessionId].clickCount || 0,
+        ''
+    ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
 
     try {
-        await appendData(auth, Object.values(formattedData));
+        await appendData(auth, formattedData);
         res.status(200).json({ message: 'Duração da sessão recebida e processada' });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao processar dados' });
@@ -225,30 +216,20 @@ app.post('/capture-click', validateData, async (req, res) => {
         };
     }
 
-    const formattedData = {
-        ip: sessions[data.sessionId].ip || '',
-        sessionId: data.sessionId || '',
-        userAgent: '',
-        browser: '',
-        os: '',
-        referrer: '',
-        url: '',
-        timestamp: convertTimestampToDateTime(data.timestamp) || '',
-        screenResolution: '',
-        deviceType: '',
-        city: '',
-        region: '',
-        country: '',
-        loadTime: '',
-        sessionDuration: '',
-        clickCount: sessions[data.sessionId].clickCount || 0,
-        pagesVisited: ''
-    };
+    const formattedData = [
+        sessions[data.sessionId].ip || '',
+        data.sessionId || '',
+        '', '', '', '', '',
+        convertTimestampToDateTime(data.timestamp) || '',
+        '', '', '', '', '',
+        '', '', sessions[data.sessionId].clickCount || 0,
+        ''
+    ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
 
     try {
-        await appendData(auth, Object.values(formattedData));
+        await appendData(auth, formattedData);
         res.status(200).json({ message: 'Clique recebido e processado' });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao processar dados' });
@@ -268,30 +249,30 @@ app.post('/page-visit', validateData, async (req, res) => {
         };
     }
 
-    const formattedData = {
-        ip: sessions[data.sessionId].ip || '',
-        sessionId: data.sessionId || '',
-        userAgent: simplifyUserAgent(data.userAgent) || 'Unknown',
-        browser: data.browser || 'Unknown',
-        os: data.os || 'Unknown',
-        referrer: data.referrer || 'Unknown',
-        url: data.url || '',
-        timestamp: convertTimestampToDateTime(data.timestamp) || '',
-        screenResolution: data.screenResolution || 'Unknown',
-        deviceType: data.deviceType || 'Unknown',
-        city: sessions[data.sessionId].city || 'N/A',
-        region: sessions[data.sessionId].region || 'N/A',
-        country: sessions[data.sessionId].country || 'N/A',
-        loadTime: data.loadTime || 'Unknown',
-        sessionDuration: data.sessionDuration || 'Unknown',
-        clickCount: sessions[data.sessionId].clickCount || 0,
-        pagesVisited: sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : ''
-    };
+    const formattedData = [
+        sessions[data.sessionId].ip || '',
+        data.sessionId || '',
+        simplifyUserAgent(data.userAgent) || 'No User Agent',
+        data.browser || 'No Browser Info',
+        data.os || 'No OS Info',
+        data.referrer || 'No Referrer',
+        data.url || '',
+        convertTimestampToDateTime(data.timestamp) || 'No Timestamp',
+        data.screenResolution || 'No Screen Resolution',
+        data.deviceType || 'No Device Type',
+        sessions[data.sessionId].city || 'No City Info',
+        sessions[data.sessionId].region || 'No Region Info',
+        sessions[data.sessionId].country || 'No Country Info',
+        data.loadTime || 'No Load Time',
+        data.sessionDuration || 'No Session Duration',
+        sessions[data.sessionId].clickCount || 0,
+        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : 'No Pages Visited'
+    ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
 
     try {
-        await appendData(auth, Object.values(formattedData));
+        await appendData(auth, formattedData);
         res.status(200).json({ message: 'Visita à página recebida e processada' });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao processar dados' });
