@@ -88,22 +88,28 @@
             navigator.sendBeacon('https://encapsul-id.onrender.com/session-duration', JSON.stringify(data));
         });
 
-        document.addEventListener('click', () => {
-            const data = {
-                sessionId: sessionId,
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent,
-                url: window.location.href
-            };
+        document.addEventListener('click', function(event) {
+            const target = event.target;
 
-            fetch('https://encapsul-id.onrender.com/capture-click', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .catch(error => console.error('Erro ao enviar clique:', error));
+            // Verifica se o clique foi em um link (elemento <a>) que leva a uma URL externa
+            if (target.tagName === 'A' && target.href.startsWith('http') && !target.href.includes(window.location.hostname)) {
+                const data = {
+                    sessionId: sessionId,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    url: window.location.href, // Página onde o clique ocorreu
+                    targetUrl: target.href      // URL para onde o usuário vai
+                };
+
+                // Envia os dados para o backend
+                fetch('https://encapsul-id.onrender.com/track-click', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }).catch(error => console.error('Erro ao enviar clique:', error));
+            }
         });
 
         document.addEventListener('DOMContentLoaded', () => {

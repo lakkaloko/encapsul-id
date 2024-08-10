@@ -189,10 +189,10 @@ app.post('/session-duration', validateData, async (req, res) => {
     }
 });
 
-// Rota para capturar cliques
-app.post('/capture-click', validateData, async (req, res) => {
+// Rota para capturar cliques em links externos
+app.post('/track-click', validateData, async (req, res) => {
     const data = req.body;
-    console.log('Clique capturado:', JSON.stringify(data, null, 2));
+    console.log('Clique em link externo registrado:', JSON.stringify(data, null, 2));
 
     const ip = getClientIp(req) || 'N/A';
     const { city, region, country } = await getGeoLocation(ip);
@@ -202,25 +202,24 @@ app.post('/capture-click', validateData, async (req, res) => {
         simplifyUserAgent(data.userAgent) || 'N/A',
         data.browser || 'N/A',
         data.os || 'N/A',
-        data.referrer || 'N/A',
-        data.url || 'N/A',
+        data.url || 'N/A',  // URL da página onde o clique ocorreu
         convertTimestampToDateTime(data.timestamp) || 'N/A',
-        data.screenResolution || 'N/A',
-        data.deviceType || 'N/A',
+        'N/A', // Screen Resolution
+        'N/A', // Device Type
         city || 'N/A',
         region || 'N/A',
         country || 'N/A',
         'N/A', // Load Time
         'N/A', // Session Duration
-        data.clickCount || 1,
-        'N/A' // Pages Visited
+        1,     // Click Count
+        data.targetUrl || 'N/A'  // URL de destino
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
 
     try {
         await appendData(auth, formattedData);
-        res.status(200).json({ message: 'Clique recebido e processado' });
+        res.status(200).json({ message: 'Clique em link externo registrado' });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao processar dados' });
     }
