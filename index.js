@@ -2,13 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
-const ipinfo = require('ipinfo');
 const app = express();
 
 const PORT = process.env.PORT || 10000;
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-const IPINFO_API_KEY = process.env.IPINFO_API_KEY;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,6 +16,7 @@ const auth = new google.auth.GoogleAuth({
     scopes: ["https://www.googleapis.com/auth/spreadsheets"]
 });
 
+const sheets = google.sheets('v4');
 const sessions = {};
 
 // Função para converter timestamp para datetime
@@ -67,7 +66,7 @@ async function appendData(auth, data) {
     const client = await auth.getClient();
     const request = {
         spreadsheetId: SPREADSHEET_ID,
-        range: 'Sheet1!A1:Q1', // Altere conforme necessário
+        range: 'Sheet1!A:Q', // Adapte conforme necessário
         valueInputOption: 'USER_ENTERED',
         insertDataOption: 'INSERT_ROWS',
         resource: {
@@ -77,7 +76,7 @@ async function appendData(auth, data) {
     };
 
     try {
-        const response = (await google.sheets({ version: 'v4', auth: client }).spreadsheets.values.append(request)).data;
+        const response = (await sheets.spreadsheets.values.append(request)).data;
         console.log('Dados enviados para a planilha:', response);
     } catch (error) {
         console.error('Erro ao enviar dados para a planilha:', error);
@@ -95,74 +94,53 @@ const getClientIp = (req) => {
     return req.connection.remoteAddress;
 };
 
-// Função para obter localização IP
-const getIpLocation = (ip) => {
-    return new Promise((resolve, reject) => {
-        ipinfo(ip, IPINFO_API_KEY, (err, cLoc) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(cLoc);
-            }
-        });
-    });
-};
-
 // Rota para coletar dados
 app.post('/collect-data', validateData, async (req, res) => {
     const data = req.body;
     console.log('Dados recebidos:', JSON.stringify(data, null, 2));
 
     const ip = getClientIp(req);
-    let cLoc;
-
-    try {
-        cLoc = await getIpLocation(ip);
-    } catch (error) {
-        console.error('Erro ao obter localização IP:', error);
-        return res.status(500).json({ error: 'Erro ao obter localização IP' });
-    }
 
     if (!sessions[data.sessionId]) {
         sessions[data.sessionId] = {
             ...data,
             ip: ip || '',
-            clickCount: 0,
-            pagesVisited: []
+            clickCount: data.clickCount || 0,
+            pagesVisited: data.pagesVisited || []
         };
     } else {
         sessions[data.sessionId] = {
             ...sessions[data.sessionId],
             ...data,
-            clickCount: (sessions[data.sessionId].clickCount || 0),
-            pagesVisited: [...new Set([...sessions[data.sessionId].pagesVisited, ...(data.pagesVisited || [])])]
+            clickCount: (sessions[data.sessionId].clickCount || 0) + (data.clickCount || 0),
+            pagesVisited: [...new Set([...sessions[data.sessionId].pagesVisited, ...data.pagesVisited])]
         };
     }
 
-    const sessionData = [
-        ip || '',
+    const formattedData = [
+        sessions[data.sessionId].ip || '',
         data.sessionId || '',
-        simplifyUserAgent(data.userAgent) || 'No User Agent',
-        data.browser || 'No Browser Info',
-        data.os || 'No OS Info',
-        data.referrer || 'No Referrer',
+        simplifyUserAgent(data.userAgent) || '',
+        data.browser || '',
+        data.os || '',
+        data.referrer || '',
         data.url || '',
-        convertTimestampToDateTime(data.timestamp) || 'No Timestamp',
-        data.screenResolution || 'No Screen Resolution',
-        data.deviceType || 'No Device Type',
-        cLoc ? cLoc.city : 'No City Info',
-        cLoc ? cLoc.region : 'No Region Info',
-        cLoc ? cLoc.country : 'No Country Info',
-        data.loadTime || 'No Load Time',
-        data.sessionDuration || 'No Session Duration',
+        convertTimestampToDateTime(data.timestamp) || '',
+        data.screenResolution || '',
+        data.deviceType || '',
+        data.city || '',
+        data.region || '',
+        data.country || '',
+        data.loadTime || '',
+        data.sessionDuration || '',
         sessions[data.sessionId].clickCount || 0,
-        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : 'No Pages Visited'
-    ];
+        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : ''
+    ].map(item => item === undefined ? '' : item);
 
-    console.log('Dados formatados para enviar para a planilha:', JSON.stringify(sessionData, null, 2));
+    console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
 
     try {
-        await appendData(auth, sessionData);
+        await appendData(auth, formattedData);
         res.status(200).json({ message: 'Dados recebidos e processados' });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao processar dados' });
@@ -252,21 +230,21 @@ app.post('/page-visit', validateData, async (req, res) => {
     const formattedData = [
         sessions[data.sessionId].ip || '',
         data.sessionId || '',
-        simplifyUserAgent(data.userAgent) || 'No User Agent',
-        data.browser || 'No Browser Info',
-        data.os || 'No OS Info',
-        data.referrer || 'No Referrer',
+        simplifyUserAgent(data.userAgent) || '',
+        data.browser || '',
+        data.os || '',
+        data.referrer || '',
         data.url || '',
-        convertTimestampToDateTime(data.timestamp) || 'No Timestamp',
-        data.screenResolution || 'No Screen Resolution',
-        data.deviceType || 'No Device Type',
-        sessions[data.sessionId].city || 'No City Info',
-        sessions[data.sessionId].region || 'No Region Info',
-        sessions[data.sessionId].country || 'No Country Info',
-        data.loadTime || 'No Load Time',
-        data.sessionDuration || 'No Session Duration',
+        convertTimestampToDateTime(data.timestamp) || '',
+        data.screenResolution || '',
+        data.deviceType || '',
+        sessions[data.sessionId].city || '',
+        sessions[data.sessionId].region || '',
+        sessions[data.sessionId].country || '',
+        data.loadTime || '',
+        data.sessionDuration || '',
         sessions[data.sessionId].clickCount || 0,
-        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : 'No Pages Visited'
+        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : ''
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
