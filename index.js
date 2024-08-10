@@ -22,7 +22,7 @@ const sessions = {};
 // Função para converter timestamp para datetime
 function convertTimestampToDateTime(timestamp) {
     const date = new Date(timestamp);
-    return date.toLocaleString();
+    return date.toISOString().replace('T', ' ').split('.')[0]; // Formato: "YYYY-MM-DD HH:MM:SS"
 }
 
 // Função para simplificar o user agent
