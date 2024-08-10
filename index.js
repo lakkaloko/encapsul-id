@@ -22,7 +22,15 @@ const sessions = {};
 // Função para converter timestamp para datetime
 function convertTimestampToDateTime(timestamp) {
     const date = new Date(timestamp);
-    return date.toISOString().replace('T', ' ').split('.')[0]; // Formato: "YYYY-MM-DD HH:MM:SS"
+    return date.toLocaleString('en-US', { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: false 
+    }).replace(',', ''); // Formato: "MM/DD/YYYY HH:MM:SS"
 }
 
 // Função para simplificar o user agent
@@ -99,12 +107,12 @@ app.post('/collect-data', validateData, async (req, res) => {
     const data = req.body;
     console.log('Dados recebidos:', JSON.stringify(data, null, 2));
 
-    const ip = getClientIp(req);
+    const ip = getClientIp(req) || 'N/A';
 
     if (!sessions[data.sessionId]) {
         sessions[data.sessionId] = {
             ...data,
-            ip: ip || '',
+            ip: ip,
             clickCount: data.clickCount || 0,
             pagesVisited: data.pagesVisited || []
         };
@@ -113,29 +121,28 @@ app.post('/collect-data', validateData, async (req, res) => {
             ...sessions[data.sessionId],
             ...data,
             clickCount: (sessions[data.sessionId].clickCount || 0) + (data.clickCount || 0),
-            pagesVisited: [...new Set([...sessions[data.sessionId].pagesVisited, ...data.pagesVisited])]
+            pagesVisited: [...new Set([...sessions[data.sessionId].pagesVisited, ...(data.pagesVisited || [])])]
         };
     }
 
     const formattedData = [
-        sessions[data.sessionId].ip || '',
-        data.sessionId || '',
-        simplifyUserAgent(data.userAgent) || '',
-        data.browser || '',
-        data.os || '',
-        data.referrer || '',
-        data.url || '',
-        convertTimestampToDateTime(data.timestamp) || '',
-        data.screenResolution || '',
-        data.deviceType || '',
-        data.city || '',
-        data.region || '',
-        data.country || '',
-        data.loadTime || '',
-        data.sessionDuration || '',
-        sessions[data.sessionId].clickCount || 0,
-        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : ''
-    ].map(item => item === undefined ? '' : item);
+        sessions[data.sessionId].ip,
+        simplifyUserAgent(data.userAgent) || 'N/A',
+        data.browser || 'N/A',
+        data.os || 'N/A',
+        data.referrer || 'N/A',
+        data.url || 'N/A',
+        convertTimestampToDateTime(data.timestamp) || 'N/A',
+        data.screenResolution || 'N/A',
+        data.deviceType || 'N/A',
+        data.city || 'N/A',
+        data.region || 'N/A',
+        data.country || 'N/A',
+        data.loadTime || 'N/A',
+        data.sessionDuration || 'N/A',
+        sessions[data.sessionId].clickCount,
+        sessions[data.sessionId].pagesVisited.join(', ') || 'N/A'
+    ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
 
@@ -161,14 +168,13 @@ app.post('/session-duration', validateData, async (req, res) => {
     }
 
     const formattedData = [
-        sessions[data.sessionId].ip || '',
-        data.sessionId || '',
-        '', '', '', '', '',
+        sessions[data.sessionId].ip || 'N/A',
+        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
         new Date().toISOString(),
-        '', '', '', '', '',
-        '', sessions[data.sessionId].sessionDuration || 0,
+        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
+        'N/A', sessions[data.sessionId].sessionDuration,
         sessions[data.sessionId].clickCount || 0,
-        ''
+        'N/A'
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
@@ -195,13 +201,12 @@ app.post('/capture-click', validateData, async (req, res) => {
     }
 
     const formattedData = [
-        sessions[data.sessionId].ip || '',
-        data.sessionId || '',
-        '', '', '', '', '',
-        convertTimestampToDateTime(data.timestamp) || '',
-        '', '', '', '', '',
-        '', '', sessions[data.sessionId].clickCount || 0,
-        ''
+        sessions[data.sessionId].ip || 'N/A',
+        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
+        convertTimestampToDateTime(data.timestamp) || 'N/A',
+        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
+        'N/A', 'N/A', sessions[data.sessionId].clickCount,
+        'N/A'
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
@@ -228,23 +233,22 @@ app.post('/page-visit', validateData, async (req, res) => {
     }
 
     const formattedData = [
-        sessions[data.sessionId].ip || '',
-        data.sessionId || '',
-        simplifyUserAgent(data.userAgent) || '',
-        data.browser || '',
-        data.os || '',
-        data.referrer || '',
-        data.url || '',
-        convertTimestampToDateTime(data.timestamp) || '',
-        data.screenResolution || '',
-        data.deviceType || '',
-        sessions[data.sessionId].city || '',
-        sessions[data.sessionId].region || '',
-        sessions[data.sessionId].country || '',
-        data.loadTime || '',
-        data.sessionDuration || '',
+        sessions[data.sessionId].ip || 'N/A',
+        simplifyUserAgent(data.userAgent) || 'N/A',
+        data.browser || 'N/A',
+        data.os || 'N/A',
+        data.referrer || 'N/A',
+        data.url || 'N/A',
+        convertTimestampToDateTime(data.timestamp) || 'N/A',
+        data.screenResolution || 'N/A',
+        data.deviceType || 'N/A',
+        sessions[data.sessionId].city || 'N/A',
+        sessions[data.sessionId].region || 'N/A',
+        sessions[data.sessionId].country || 'N/A',
+        data.loadTime || 'N/A',
+        data.sessionDuration || 'N/A',
         sessions[data.sessionId].clickCount || 0,
-        sessions[data.sessionId].pagesVisited ? sessions[data.sessionId].pagesVisited.join(', ') : ''
+        sessions[data.sessionId].pagesVisited.join(', ') || 'N/A'
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
