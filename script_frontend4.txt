@@ -6,10 +6,16 @@
             localStorage.setItem('sessionId', sessionId);
         }
 
+        function logDataStatus(data, context) {
+            console.log(`Verificando dados antes de ${context}:`, data);
+            if (!data.sessionId || !data.userAgent || !data.url || !data.timestamp) {
+                console.error(`Dados faltando antes de ${context}`, data);
+            }
+        }
+
         function collectData() {
             const data = {
                 sessionId: sessionId,
-                ip: null, // Capturado no servidor
                 userAgent: navigator.userAgent,
                 referrer: document.referrer || 'N/A',
                 url: window.location.href,
@@ -19,24 +25,28 @@
                 loadTime: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart
             };
 
-            console.log('Dados a serem enviados:', data);
+            logDataStatus(data, "enviar para /collect-data");
 
-            fetch('https://encapsul-id.onrender.com/collect-data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(jsonResponse => {
-                console.log('Resposta recebida do servidor:', jsonResponse);
-                if (jsonResponse.sessionId) {
-                    sessionId = jsonResponse.sessionId;
-                    localStorage.setItem('sessionId', sessionId);
-                }
-            })
-            .catch(error => console.error('Erro ao enviar dados:', error));
+            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
+                console.log('Dados a serem enviados:', data);
+
+                fetch('https://encapsul-id.onrender.com/collect-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(jsonResponse => {
+                    console.log('Resposta recebida do servidor:', jsonResponse);
+                    if (jsonResponse.sessionId) {
+                        sessionId = jsonResponse.sessionId;
+                        localStorage.setItem('sessionId', sessionId);
+                    }
+                })
+                .catch(error => console.error('Erro ao enviar dados:', error));
+            }
         }
 
         window.addEventListener('load', () => {
@@ -47,31 +57,63 @@
         window.addEventListener('beforeunload', () => {
             const duration = new Date() - startTime;
 
-            navigator.sendBeacon('https://encapsul-id.onrender.com/session-duration', JSON.stringify({ sessionId, duration }));
+            const data = {
+                sessionId: sessionId,
+                duration: duration,
+                userAgent: navigator.userAgent,
+                url: window.location.href,
+                timestamp: new Date().toISOString()
+            };
 
-            navigator.sendBeacon('https://encapsul-id.onrender.com/end-session', JSON.stringify({ sessionId }));
+            logDataStatus(data, "enviar para /session-duration");
+
+            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
+                navigator.sendBeacon('https://encapsul-id.onrender.com/session-duration', JSON.stringify(data));
+            }
         });
 
         document.addEventListener('click', () => {
-            fetch('https://encapsul-id.onrender.com/capture-click', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ sessionId, timestamp: new Date().toISOString() })
-            })
-            .catch(error => console.error('Erro ao enviar clique:', error));
+            const data = {
+                sessionId: sessionId,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                url: window.location.href
+            };
+
+            logDataStatus(data, "enviar para /capture-click");
+
+            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
+                fetch('https://encapsul-id.onrender.com/capture-click', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .catch(error => console.error('Erro ao enviar clique:', error));
+            }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('https://encapsul-id.onrender.com/page-visit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ sessionId, url: window.location.href, timestamp: new Date().toISOString() })
-            })
-            .catch(error => console.error('Erro ao enviar página visitada:', error));
+            const data = {
+                sessionId: sessionId,
+                url: window.location.href,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+
+            logDataStatus(data, "enviar para /page-visit");
+
+            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
+                fetch('https://encapsul-id.onrender.com/page-visit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .catch(error => console.error('Erro ao enviar página visitada:', error));
+            }
         });
     })();
 </script>

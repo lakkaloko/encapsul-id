@@ -17,7 +17,6 @@ const auth = new google.auth.GoogleAuth({
 });
 
 const sheets = google.sheets('v4');
-const sessions = {};
 
 // Função para converter timestamp para datetime
 function convertTimestampToDateTime(timestamp) {
@@ -109,24 +108,8 @@ app.post('/collect-data', validateData, async (req, res) => {
 
     const ip = getClientIp(req) || 'N/A';
 
-    if (!sessions[data.sessionId]) {
-        sessions[data.sessionId] = {
-            ...data,
-            ip: ip,
-            clickCount: data.clickCount || 0,
-            pagesVisited: data.pagesVisited || []
-        };
-    } else {
-        sessions[data.sessionId] = {
-            ...sessions[data.sessionId],
-            ...data,
-            clickCount: (sessions[data.sessionId].clickCount || 0) + (data.clickCount || 0),
-            pagesVisited: [...new Set([...sessions[data.sessionId].pagesVisited, ...(data.pagesVisited || [])])]
-        };
-    }
-
     const formattedData = [
-        sessions[data.sessionId].ip || 'N/A',
+        ip,
         simplifyUserAgent(data.userAgent) || 'N/A',
         data.browser || 'N/A',
         data.os || 'N/A',
@@ -140,8 +123,8 @@ app.post('/collect-data', validateData, async (req, res) => {
         data.country || 'N/A',
         data.loadTime || 'N/A',
         data.sessionDuration || 'N/A',
-        sessions[data.sessionId].clickCount || 0,
-        sessions[data.sessionId].pagesVisited.join(', ') || 'N/A'
+        data.clickCount || 0,
+        data.pagesVisited || 'N/A'
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
@@ -159,22 +142,25 @@ app.post('/session-duration', validateData, async (req, res) => {
     const data = req.body;
     console.log('Duração da sessão:', JSON.stringify(data, null, 2));
 
-    if (sessions[data.sessionId]) {
-        sessions[data.sessionId].sessionDuration = data.duration || 0;
-    } else {
-        sessions[data.sessionId] = {
-            sessionDuration: data.duration || 0
-        };
-    }
+    const ip = getClientIp(req) || 'N/A';
 
     const formattedData = [
-        sessions[data.sessionId].ip || 'N/A',
-        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
-        new Date().toISOString(),
-        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
-        'N/A', sessions[data.sessionId].sessionDuration,
-        sessions[data.sessionId].clickCount || 0,
-        'N/A'
+        ip,
+        simplifyUserAgent(data.userAgent) || 'N/A',
+        data.browser || 'N/A',
+        data.os || 'N/A',
+        data.referrer || 'N/A',
+        data.url || 'N/A',
+        convertTimestampToDateTime(data.timestamp) || 'N/A',
+        data.screenResolution || 'N/A',
+        data.deviceType || 'N/A',
+        'N/A', // City
+        'N/A', // Region
+        'N/A', // Country
+        'N/A', // Load Time
+        data.duration || 'N/A',
+        data.clickCount || 0,
+        'N/A' // Pages Visited
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
@@ -192,21 +178,25 @@ app.post('/capture-click', validateData, async (req, res) => {
     const data = req.body;
     console.log('Clique capturado:', JSON.stringify(data, null, 2));
 
-    if (sessions[data.sessionId]) {
-        sessions[data.sessionId].clickCount = (sessions[data.sessionId].clickCount || 0) + 1;
-    } else {
-        sessions[data.sessionId] = {
-            clickCount: 1
-        };
-    }
+    const ip = getClientIp(req) || 'N/A';
 
     const formattedData = [
-        sessions[data.sessionId].ip || 'N/A',
-        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
+        ip,
+        simplifyUserAgent(data.userAgent) || 'N/A',
+        data.browser || 'N/A',
+        data.os || 'N/A',
+        data.referrer || 'N/A',
+        data.url || 'N/A',
         convertTimestampToDateTime(data.timestamp) || 'N/A',
-        'N/A', 'N/A', 'N/A', 'N/A', 'N/A',
-        'N/A', 'N/A', sessions[data.sessionId].clickCount,
-        'N/A'
+        data.screenResolution || 'N/A',
+        data.deviceType || 'N/A',
+        'N/A', // City
+        'N/A', // Region
+        'N/A', // Country
+        'N/A', // Load Time
+        'N/A', // Session Duration
+        data.clickCount || 1,
+        'N/A' // Pages Visited
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
@@ -224,16 +214,10 @@ app.post('/page-visit', validateData, async (req, res) => {
     const data = req.body;
     console.log('Visita à página:', JSON.stringify(data, null, 2));
 
-    if (sessions[data.sessionId]) {
-        sessions[data.sessionId].pagesVisited = (sessions[data.sessionId].pagesVisited || []).concat(data.url);
-    } else {
-        sessions[data.sessionId] = {
-            pagesVisited: [data.url]
-        };
-    }
+    const ip = getClientIp(req) || 'N/A';
 
     const formattedData = [
-        sessions[data.sessionId].ip || 'N/A',
+        ip,
         simplifyUserAgent(data.userAgent) || 'N/A',
         data.browser || 'N/A',
         data.os || 'N/A',
@@ -242,13 +226,13 @@ app.post('/page-visit', validateData, async (req, res) => {
         convertTimestampToDateTime(data.timestamp) || 'N/A',
         data.screenResolution || 'N/A',
         data.deviceType || 'N/A',
-        sessions[data.sessionId].city || 'N/A',
-        sessions[data.sessionId].region || 'N/A',
-        sessions[data.sessionId].country || 'N/A',
+        'N/A', // City
+        'N/A', // Region
+        'N/A', // Country
         data.loadTime || 'N/A',
-        data.sessionDuration || 'N/A',
-        sessions[data.sessionId].clickCount || 0,
-        sessions[data.sessionId].pagesVisited.join(', ') || 'N/A'
+        'N/A', // Session Duration
+        data.clickCount || 0,
+        data.url || 'N/A'
     ];
 
     console.log('Dados formatados para enviar para a planilha:', JSON.stringify(formattedData, null, 2));
