@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
+const axios = require('axios');
 const app = express();
 
 const PORT = process.env.PORT || 10000;
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_APPLICATION_CREDENTIALS = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+const GEO_API_KEY = '01030136f0cb56'; // Seu token da ipinfo
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -42,6 +44,18 @@ function simplifyUserAgent(userAgent) {
         return "Windows Device";
     } else {
         return "Other Device";
+    }
+}
+
+// Função para obter a localização a partir do IP
+async function getGeoLocation(ip) {
+    try {
+        const response = await axios.get(`https://ipinfo.io/${ip}?token=${GEO_API_KEY}`);
+        const { city, region, country } = response.data;
+        return { city, region, country };
+    } catch (error) {
+        console.error('Erro ao obter localização:', error);
+        return { city: 'N/A', region: 'N/A', country: 'N/A' };
     }
 }
 
@@ -107,6 +121,7 @@ app.post('/collect-data', validateData, async (req, res) => {
     console.log('Dados recebidos:', JSON.stringify(data, null, 2));
 
     const ip = getClientIp(req) || 'N/A';
+    const { city, region, country } = await getGeoLocation(ip);
 
     const formattedData = [
         ip,
@@ -118,9 +133,9 @@ app.post('/collect-data', validateData, async (req, res) => {
         convertTimestampToDateTime(data.timestamp) || 'N/A',
         data.screenResolution || 'N/A',
         data.deviceType || 'N/A',
-        data.city || 'N/A',
-        data.region || 'N/A',
-        data.country || 'N/A',
+        city || 'N/A',
+        region || 'N/A',
+        country || 'N/A',
         data.loadTime || 'N/A',
         data.sessionDuration || 'N/A',
         data.clickCount || 0,
@@ -143,6 +158,7 @@ app.post('/session-duration', validateData, async (req, res) => {
     console.log('Duração da sessão:', JSON.stringify(data, null, 2));
 
     const ip = getClientIp(req) || 'N/A';
+    const { city, region, country } = await getGeoLocation(ip);
 
     const formattedData = [
         ip,
@@ -154,9 +170,9 @@ app.post('/session-duration', validateData, async (req, res) => {
         convertTimestampToDateTime(data.timestamp) || 'N/A',
         data.screenResolution || 'N/A',
         data.deviceType || 'N/A',
-        'N/A', // City
-        'N/A', // Region
-        'N/A', // Country
+        city || 'N/A',
+        region || 'N/A',
+        country || 'N/A',
         'N/A', // Load Time
         data.duration || 'N/A',
         data.clickCount || 0,
@@ -179,6 +195,7 @@ app.post('/capture-click', validateData, async (req, res) => {
     console.log('Clique capturado:', JSON.stringify(data, null, 2));
 
     const ip = getClientIp(req) || 'N/A';
+    const { city, region, country } = await getGeoLocation(ip);
 
     const formattedData = [
         ip,
@@ -190,9 +207,9 @@ app.post('/capture-click', validateData, async (req, res) => {
         convertTimestampToDateTime(data.timestamp) || 'N/A',
         data.screenResolution || 'N/A',
         data.deviceType || 'N/A',
-        'N/A', // City
-        'N/A', // Region
-        'N/A', // Country
+        city || 'N/A',
+        region || 'N/A',
+        country || 'N/A',
         'N/A', // Load Time
         'N/A', // Session Duration
         data.clickCount || 1,
@@ -215,6 +232,7 @@ app.post('/page-visit', validateData, async (req, res) => {
     console.log('Visita à página:', JSON.stringify(data, null, 2));
 
     const ip = getClientIp(req) || 'N/A';
+    const { city, region, country } = await getGeoLocation(ip);
 
     const formattedData = [
         ip,
@@ -226,9 +244,9 @@ app.post('/page-visit', validateData, async (req, res) => {
         convertTimestampToDateTime(data.timestamp) || 'N/A',
         data.screenResolution || 'N/A',
         data.deviceType || 'N/A',
-        'N/A', // City
-        'N/A', // Region
-        'N/A', // Country
+        city || 'N/A',
+        region || 'N/A',
+        country || 'N/A',
         data.loadTime || 'N/A',
         'N/A', // Session Duration
         data.clickCount || 0,

@@ -6,17 +6,41 @@
             localStorage.setItem('sessionId', sessionId);
         }
 
-        function logDataStatus(data, context) {
-            console.log(`Verificando dados antes de ${context}:`, data);
-            if (!data.sessionId || !data.userAgent || !data.url || !data.timestamp) {
-                console.error(`Dados faltando antes de ${context}`, data);
+        function getBrowserInfo() {
+            const userAgent = navigator.userAgent;
+            let browserName = "Unknown Browser";
+            let osName = "Unknown OS";
+
+            if (userAgent.indexOf("Chrome") > -1) {
+                browserName = "Chrome";
+            } else if (userAgent.indexOf("Safari") > -1) {
+                browserName = "Safari";
+            } else if (userAgent.indexOf("Firefox") > -1) {
+                browserName = "Firefox";
+            } else if (userAgent.indexOf("MSIE") > -1 || !!document.documentMode) {
+                browserName = "Internet Explorer";
             }
+
+            if (userAgent.indexOf("Windows") > -1) {
+                osName = "Windows";
+            } else if (userAgent.indexOf("Mac") > -1) {
+                osName = "MacOS";
+            } else if (userAgent.indexOf("X11") > -1) {
+                osName = "UNIX";
+            } else if (userAgent.indexOf("Linux") > -1) {
+                osName = "Linux";
+            }
+
+            return { browserName, osName };
         }
 
         function collectData() {
+            const { browserName, osName } = getBrowserInfo();
             const data = {
                 sessionId: sessionId,
                 userAgent: navigator.userAgent,
+                browser: browserName,
+                os: osName,
                 referrer: document.referrer || 'N/A',
                 url: window.location.href,
                 timestamp: new Date().toISOString(),
@@ -25,28 +49,24 @@
                 loadTime: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart
             };
 
-            logDataStatus(data, "enviar para /collect-data");
+            console.log('Dados a serem enviados:', data);
 
-            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
-                console.log('Dados a serem enviados:', data);
-
-                fetch('https://encapsul-id.onrender.com/collect-data', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(jsonResponse => {
-                    console.log('Resposta recebida do servidor:', jsonResponse);
-                    if (jsonResponse.sessionId) {
-                        sessionId = jsonResponse.sessionId;
-                        localStorage.setItem('sessionId', sessionId);
-                    }
-                })
-                .catch(error => console.error('Erro ao enviar dados:', error));
-            }
+            fetch('https://encapsul-id.onrender.com/collect-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(jsonResponse => {
+                console.log('Resposta recebida do servidor:', jsonResponse);
+                if (jsonResponse.sessionId) {
+                    sessionId = jsonResponse.sessionId;
+                    localStorage.setItem('sessionId', sessionId);
+                }
+            })
+            .catch(error => console.error('Erro ao enviar dados:', error));
         }
 
         window.addEventListener('load', () => {
@@ -65,11 +85,7 @@
                 timestamp: new Date().toISOString()
             };
 
-            logDataStatus(data, "enviar para /session-duration");
-
-            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
-                navigator.sendBeacon('https://encapsul-id.onrender.com/session-duration', JSON.stringify(data));
-            }
+            navigator.sendBeacon('https://encapsul-id.onrender.com/session-duration', JSON.stringify(data));
         });
 
         document.addEventListener('click', () => {
@@ -80,18 +96,14 @@
                 url: window.location.href
             };
 
-            logDataStatus(data, "enviar para /capture-click");
-
-            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
-                fetch('https://encapsul-id.onrender.com/capture-click', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .catch(error => console.error('Erro ao enviar clique:', error));
-            }
+            fetch('https://encapsul-id.onrender.com/capture-click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .catch(error => console.error('Erro ao enviar clique:', error));
         });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -102,18 +114,14 @@
                 userAgent: navigator.userAgent
             };
 
-            logDataStatus(data, "enviar para /page-visit");
-
-            if (data.sessionId && data.userAgent && data.url && data.timestamp) {
-                fetch('https://encapsul-id.onrender.com/page-visit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .catch(error => console.error('Erro ao enviar página visitada:', error));
-            }
+            fetch('https://encapsul-id.onrender.com/page-visit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .catch(error => console.error('Erro ao enviar página visitada:', error));
         });
     })();
 </script>
