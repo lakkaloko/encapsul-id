@@ -126,7 +126,7 @@ app.post('/collect-data', validateData, async (req, res) => {
     }
 
     const formattedData = [
-        sessions[data.sessionId].ip,
+        sessions[data.sessionId].ip || 'N/A',
         simplifyUserAgent(data.userAgent) || 'N/A',
         data.browser || 'N/A',
         data.os || 'N/A',
@@ -140,7 +140,7 @@ app.post('/collect-data', validateData, async (req, res) => {
         data.country || 'N/A',
         data.loadTime || 'N/A',
         data.sessionDuration || 'N/A',
-        sessions[data.sessionId].clickCount,
+        sessions[data.sessionId].clickCount || 0,
         sessions[data.sessionId].pagesVisited.join(', ') || 'N/A'
     ];
 
